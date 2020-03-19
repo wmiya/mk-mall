@@ -82,53 +82,48 @@ export default {
   methods: {
     async getGoodsList (flag) {
       this.loading = true
-      var param = {
+      let params = {
         page: this.page,
         pageSize: this.pageSize,
         sort: this.sortFlag ? 1 : -1,
         priceLevel: this.priceChecked
-      };
-      let { data: { status, result } } = await this.axios.get('/goods', {
-        params: param
-      });
+      }
+      let { data: { status, result } } = await this.axios('goods1', {
+        params: params
+      })
       if (status === 0) {
         this.loading = false
         if (flag) {
           this.goodList = this.goodList.concat(result.list)
-          if (result.count === 0) {
-            this.busy = true
-          } else {
-            this.busy = false
-          }
+          this.busy = result.count === 0 ? true : false
         } else {
           this.goodList = result.list
           this.busy = false
         }
-
       } else {
-        this.goodsList = [];
+        this.goodList = []
       }
     },
     handleClick () {
-      this.filterBy = true;
-      this.overLayFlag = true;
+      this.filterBy = true
+      this.overLayFlag = true
+
     },
     handleSort () {
-      this.page = 1
+      this.page = 1;
       this.sortFlag = !this.sortFlag
       this.getGoodsList()
     },
     loadMore () {
-      console.log(121)
-      this.busy = true;
+      this.busy = true
       setTimeout(() => {
         this.page++
         this.getGoodsList(true)
       }, 500);
     },
     closePop () {
-      this.filterBy = false;
-      this.overLayFlag = false;
+      this.filterBy = false
+      this.overLayFlag = false
     },
     setPriceFilter (index) {
       this.priceChecked = index
