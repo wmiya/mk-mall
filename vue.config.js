@@ -5,7 +5,10 @@ module.exports = {
         port: 9091,
         proxy: {
             '/api/*': {
-                target: 'http://lemall.futurefe.com/'
+                target: 'http://localhost:3000/',
+                pathRewrite: {
+                    "^/api": ""
+                }
             }
         }
     }

@@ -3,11 +3,14 @@ import App from './App.vue'
 import router from './router/index'
 import VueLazyload from 'vue-lazyload'
 import axios from 'axios'
+import vueInfiniteScroll from 'vue-infinite-scroll'
 
 Vue.prototype.axios = axios
 
 Vue.config.productionTip = false
 
+
+Vue.use(vueInfiniteScroll)
 Vue.use(VueLazyload, {
   loading: 'static/loading-svg/loading-bars.svg',
   try: 3 // default 1

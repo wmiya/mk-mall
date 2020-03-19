@@ -4,6 +4,7 @@
     <a href="javascript:void(0)"
        class="default cur">Default</a>
     <a href="javascript:void(0)"
+       @click="handleSort"
        class="price">Price <svg class="icon icon-arrow-short">
         <use xlink:href="#icon-arrow-short"></use>
       </svg></a>
@@ -18,6 +19,9 @@ export default {
   methods: {
     handleClick () {
       this.$emit('showFilterPop')
+    },
+    handleSort () {
+      this.$emit('sort')
     }
   }
 }

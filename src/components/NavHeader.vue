@@ -37,7 +37,7 @@
       <div class="navbar-left-container">
         <a href="/">
           <img class="navbar-brand-logo"
-               src="@/assets/img/logo.png"></a>
+               src="/static/logo.png"></a>
       </div>
       <div class="navbar-right-container"
            style="display: flex;">

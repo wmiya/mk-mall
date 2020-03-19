@@ -4,10 +4,11 @@
     <dl class="filter-price">
       <dt>Price:</dt>
       <dd><a href="javascript:void(0)"
+           @click="handleClick('all')"
            :class="{'cur':priceChecked=='all'}">All</a></dd>
       <dd v-for="(item,index) in priceFilter"
           :key="index">
-        <a @click="handelClick(index)"
+        <a @click="handleClick(index)"
            href="javascript:void(0)"
            :class="{'cur':priceChecked==index}">{{item.startPrice}} - {{item.endPrice}}</a>
       </dd>
@@ -41,8 +42,9 @@ export default {
     }
   },
   methods: {
-    handelClick (val) {
+    handleClick (val) {
       this.priceChecked = val
+      this.$emit('setPriceFilter', val)
     }
   }
 }
