@@ -44,12 +44,51 @@
                    v-show="loading">
             </div>
           </div>
-          <div class="md-overlay"
-               v-show="overLayFlag"
-               @click.stop="closePop"></div>
         </div>
       </div>
     </div>
+    <modal v-bind:mdShow="mdShow"
+           v-on:close="closeModal">
+      <template v-slot:message>
+        <p>
+          请先登录,否则无法加入到购物车中!
+        </p>
+      </template>
+      <template v-slot:btnGroup>
+        <div>
+          <a class="btn btn--m"
+             href="javascript:;"
+             @click="mdShow = false">关闭</a>
+        </div>
+      </template>
+    </modal>
+    <modal v-bind:mdShow="mdShowCart"
+           v-on:close="closeModal">
+
+      <template v-slot:message>
+        <p>
+          <svg class="icon-status-ok">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                 xlink:href="#icon-status-ok"></use>
+          </svg>
+          <span>加入购物车成!</span>
+        </p>
+      </template>
+      <template v-slot:btnGroup>
+        <div>
+          <a class="btn btn--m"
+             href="javascript:;"
+             @click="mdShowCart = false">继续购物</a>
+          <router-link class="btn btn--m btn--red"
+                       href="javascript:;"
+                       to="/cart">查看购物车</router-link>
+        </div>
+      </template>
+
+    </modal>
+    <div class="md-overlay"
+         v-show="overLayFlag"
+         @click.stop="closePop"></div>
   </div>
 </template>
 <script>
@@ -74,7 +113,9 @@ export default {
       sortFlag: true,
       busy: true,
       priceChecked: 'all',
-      loading: false
+      loading: false,
+      mdShow: false,
+      mdShowCart: false
     }
   },
   mounted () {
@@ -137,8 +178,15 @@ export default {
         productId: productId
       })
       if (status === 0) {
-        alert('加入成功')
+        this.mdShowCart = true
+      } else {
+        this.mdShow = true
+
       }
+    },
+    closeModal () {
+      this.mdShow = false
+      this.mdShowCart = false;
     }
   }
 }
