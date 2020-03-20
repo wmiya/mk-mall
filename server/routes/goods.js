@@ -7,7 +7,7 @@ mongoose.connection.on('connected', function () {
     console.log('链接成功')
 })
 
-router.get('/', async (req, res, next) => {
+router.get('/list', async (req, res, next) => {
     // page pageSize  sort priceLevel 
     let priceLevel = req.query.priceLevel
     let sort = req.query.sort

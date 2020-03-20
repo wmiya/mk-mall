@@ -89,7 +89,7 @@ export default {
         sort: this.sortFlag ? 1 : -1,
         priceLevel: this.priceChecked
       }
-      let { data: { status, result } } = await this.axios('goods', {
+      let { data: { status, result } } = await this.axios('/goods/list', {
         params: params
       })
       if (status === 0) {
