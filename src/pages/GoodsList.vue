@@ -29,6 +29,7 @@
                     <div class="price">${{item.salePrice }}</div>
                     <div class="btn-area">
                       <a href="javascript:;"
+                         @click="addCart(item.productId)"
                          class="btn btn--m">加入购物车</a>
                     </div>
                   </div>
@@ -88,7 +89,7 @@ export default {
         sort: this.sortFlag ? 1 : -1,
         priceLevel: this.priceChecked
       }
-      let { data: { status, result } } = await this.axios('goods1', {
+      let { data: { status, result } } = await this.axios('goods', {
         params: params
       })
       if (status === 0) {
@@ -129,6 +130,15 @@ export default {
       this.priceChecked = index
       this.page = 1;
       this.getGoodsList()
+    },
+    // 加入购物车逻辑
+    async  addCart (productId) {
+      let { data: { status } } = await this.axios.post('/goods/addCart', {
+        productId: productId
+      })
+      if (status === 0) {
+        alert('加入成功')
+      }
     }
   }
 }

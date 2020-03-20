@@ -41,7 +41,8 @@ axios.interceptors.response.use((response) => {
   }
 }, (error) => {
   let res = error.response;
-  alert(res.data.message)
+  console.log('错误信息：' + res)
+  // alert(res.data.message)
   return Promise.reject(error);
 })
 
