@@ -70,4 +70,107 @@ router.get('/checkLogin', function (req, res, next) {
     })
   }
 })
+
+
+router.get('/cartList', async (req, res, next) => {
+  let userId = req.cookies.userId
+  let doc = await user.findOne({
+    userId: userId
+  })
+  if (doc) {
+    res.json({
+      status: 0,
+      msg: '',
+      result: doc.cartList
+    })
+  } else {
+    res.json({
+      status: 1,
+      msg: '未登陆',
+      result: ''
+    })
+  }
+})
+router.post('/cartDel', async (req, res, next) => {
+  let userId = req.cookies.userId
+  let productId = req.body.productId
+  let doc = await user.updateOne({
+    userId: userId
+  }, {
+    $pull: {
+      cartList: {
+        productId: productId
+      }
+    }
+  })
+  if (doc) {
+    res.json({
+      status: 0,
+      msg: '',
+      result: ''
+    })
+  } else {
+    res.json({
+      status: 1,
+      msg: '错误',
+      result: ''
+    })
+  }
+})
+
+router.post('/cartEdit', async (req, res, next) => {
+  let userId = req.cookies.userId,
+    productId = req.body.productId,
+    checked = req.body.checked,
+    productNum = req.body.productNum
+  let doc = await user.updateOne({
+    userId: userId,
+    'cartList.productId': productId
+  }, {
+    'cartList.$.productNum': productNum,
+    'cartList.$.checked': checked,
+  })
+  if (doc) {
+    res.json({
+      status: 0,
+      msg: '',
+      result: 'suc'
+    })
+  } else {
+    res.json({
+      status: 0,
+      msg: '错误啦',
+      result: ''
+    })
+  }
+})
+
+router.post('/editCheckAll', async (req, res, next) => {
+  let userId = req.cookies.userId
+  let checkAll = req.body.checkAll
+  let doc = await user.findOne({
+    userId: userId
+  })
+  if (doc) {
+    doc.cartList.forEach(item => {
+      item.checked = checkAll
+    });
+    let resdoc = await doc.save()
+    if (resdoc) {
+      res.json({
+        status: 0,
+        msg: '',
+        result: 'suc'
+      })
+    } else {
+      res.json({
+        status: 1,
+        msg: '设置失败',
+        result: ''
+      })
+    }
+  }
+})
+
+
 module.exports = router;

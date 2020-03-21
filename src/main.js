@@ -5,10 +5,13 @@ import VueLazyload from 'vue-lazyload'
 import axios from 'axios'
 import vueInfiniteScroll from 'vue-infinite-scroll'
 import Modal from './components/Modal/index'
-
+import {
+  currency
+} from './util/currency'
 Vue.use(Modal)
 Vue.prototype.axios = axios
 
+Vue.filter('currency', currency)
 Vue.config.productionTip = false
 
 
