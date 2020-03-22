@@ -148,7 +148,8 @@
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red"
-                   :class="{'btn--dis':checkedCount==0}">Checkout</a>
+                   :class="{'btn--dis':checkedCount==0}"
+                   @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -265,6 +266,13 @@ export default {
       })
       if (status === 0) {
         console.log(result, "update suc");
+      }
+    },
+    checkOut () {
+      if (this.checkedCount > 0) {
+        this.$router.push({
+          path: '/address'
+        })
       }
     }
   }

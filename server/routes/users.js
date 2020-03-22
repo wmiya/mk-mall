@@ -172,5 +172,84 @@ router.post('/editCheckAll', async (req, res, next) => {
   }
 })
 
+router.get('/addressList', async (req, res, next) => {
+  let userId = req.cookies.userId
+  if (userId) {
+    let userDoc = await user.findOne({
+      userId: userId
+    })
+    if (userDoc) {
+      res.json({
+        status: 0,
+        msg: '',
+        result: userDoc.addressList
+      })
+    } else {
+      res.json({
+        status: 1,
+        msg: '用户不存在',
+        result: ''
+      })
+    }
+  }
+  router.post('/setDefault', async (req, res, next) => {
+    let userId = req.cookies.userId
+    let addressId = req.body.addressId
+    let userdoc = await user.findOne({
+      userId: userId
+    })
+    if (userdoc) {
+      userdoc.addressList.forEach(item => {
+        if (item.addressId == addressId) {
+          item.isDefault = true
+        } else {
+          item.isDefault = false
+        }
+      })
+      let doc = await userdoc.save()
+      if (doc) {
+        res.json({
+          status: 0,
+          msg: '',
+          result: 'suc'
+        })
+      } else {
+        res.json({
+          status: 1,
+          msg: '设置失败',
+          result: ''
+        })
+      }
+    }
+  })
+})
+
+
+router.post('/delAddress', async (req, res, next) => {
+  let userId = req.cookies.userId
+  let addressId = req.body.addressId
+  let doc = await user.updateOne({
+    userId: userId
+  }, {
+    $pull: {
+      addressList: {
+        addressId: addressId
+      }
+    }
+  })
+  if (doc) {
+    res.json({
+      status: 0,
+      msg: '',
+      result: 'suc'
+    })
+  } else {
+    res.json({
+      status: 1,
+      msg: '地址删除失败',
+      result: ''
+    })
+  }
+})
 
 module.exports = router;
