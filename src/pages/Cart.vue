@@ -1,13 +1,8 @@
 <template>
   <div>
-    <div class="nav-breadcrumb-wrap">
-      <div class="container">
-        <nav class="nav-breadcrumb">
-          <a href="/">Home</a>
-          <span>My Cart</span>
-        </nav>
-      </div>
-    </div>
+    <nav-bread>
+      <span>My Cart</span>
+    </nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;"
          version="1.1"
          xmlns="http://www.w3.org/2000/svg"
@@ -177,8 +172,13 @@
   </div>
 </template>
 <script>
+import NavBread from '@/components/NavBread'
+
 export default {
   name: 'Cart',
+  components: {
+    NavBread
+  },
   data () {
     return {
       cartList: [],

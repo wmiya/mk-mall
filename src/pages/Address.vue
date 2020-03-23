@@ -1,13 +1,8 @@
 <template>
   <div>
-    <div class="nav-breadcrumb-wrap">
-      <div class="container">
-        <nav class="nav-breadcrumb">
-          <a href="/">Home</a>
-          <span>Address</span>
-        </nav>
-      </div>
-    </div>
+    <nav-bread>
+      <span>Address</span>
+    </nav-bread>
     <div class="checkout-page">
       <svg style="position: absolute; width: 0; height: 0; overflow: hidden;"
            version="1.1"
@@ -198,8 +193,13 @@
   </div>
 </template>
 <script>
+import NavBread from '@/components/NavBread'
+
 export default {
   name: 'Address',
+  components: {
+    NavBread
+  },
   data () {
     return {
       addressList: [],
@@ -272,7 +272,7 @@ export default {
     },
     getorderConfirm () {
       if (this.selectedAddrId.length) {
-        this.$router.push({ path: 'orderConfirm', query: { 'addressId': this.selectedAddrId.addressId } })
+        this.$router.push({ path: 'orderConfirm', query: { 'addressId': this.selectedAddrId[0].addressId } })
       } else {
         alert('请选择默认地址')
       }
