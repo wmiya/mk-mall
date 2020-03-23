@@ -26,12 +26,12 @@
             </p>
             <div class="order-create-btn-wrap">
               <div class="btn-l-wrap">
-                <a href="javascript:;"
-                   class="btn btn--m">Cart List</a>
+                <router-link to="/cart"
+                             class="btn btn--m">Cart List</router-link>
               </div>
               <div class="btn-r-wrap">
-                <a href="javascript:;"
-                   class="btn btn--m">Goods List</a>
+                <router-link to="/"
+                             class="btn btn--m">Goods List</router-link>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default {
       if (!orderId) {
         return;
       }
-      let { data: { status, result } } = await this.axios.get('/users/orderDetail', {
+      let { data: { status, msg, result } } = await this.axios.get('/users/orderDetail', {
         params: {
           orderId: orderId
         }
@@ -66,6 +66,8 @@ export default {
       if (status === 0) {
         this.orderId = result.result
         this.orderTotal = result.orderTotal
+      } else {
+        alert(msg)
       }
     }
   }
