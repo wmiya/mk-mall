@@ -57,8 +57,10 @@
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"
                   v-if="cartCount>0">{{cartCount}}</span>
+
             <a class="navbar-link navbar-cart-link"
-               href="/#/cart">
+               @click="gocart"
+               href="javascript:;">
               <svg class="navbar-cart-logo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink"
                      xlink:href="#icon-cart"></use>
@@ -138,6 +140,13 @@ export default {
   },
   methods: {
     ...mapMutations(['updateNickName', 'initCartCount']),
+    gocart () {
+      if (!this.nickName) {
+        alert('请先登录')
+      } else {
+        this.$router.push({ path: '/cart' })
+      }
+    },
     async checkLogin () {
       let res = await this.axios.get('/users/checkLogin')
       if (res.data.status === 0) {
@@ -145,7 +154,7 @@ export default {
         this.getCartCount();
       } else {
         if (this.$route.path != "/goods") {
-          this.$router.push("/goods");
+          this.$router.push({ path: "/goods" });
         }
       }
     },

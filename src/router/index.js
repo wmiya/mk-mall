@@ -28,6 +28,15 @@ export default new Router({
             component: Cart
         },
         {
+            path: '/goods',
+            name: 'GoodsList',
+            meta: {
+                title: '商城首页',
+                login_require: false
+            },
+            component: GoodsList
+        },
+        {
             path: '/address',
             name: 'Address',
             meta: {
