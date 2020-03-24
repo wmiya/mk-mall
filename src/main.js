@@ -1,19 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Vuex from 'vuex'
 import router from './router/index'
 import VueLazyload from 'vue-lazyload'
 import axios from 'axios'
 import vueInfiniteScroll from 'vue-infinite-scroll'
 import Modal from './components/Modal/index'
+import store from './store/index'
 import {
   currency
 } from './util/currency'
 Vue.use(Modal)
+Vue.use(Vuex)
 Vue.prototype.axios = axios
 
 Vue.filter('currency', currency)
 Vue.config.productionTip = false
-
 
 Vue.use(vueInfiniteScroll)
 Vue.use(VueLazyload, {
@@ -52,9 +54,8 @@ axios.defaults.timeout = 8000
 // })
 
 
-
-
 new Vue({
+  store,
   router,
   render: h => h(App),
 }).$mount('#app')

@@ -55,7 +55,8 @@
              v-if="nickName"
              @click="Logout">Logout</a>
           <div class="navbar-cart-container">
-            <span class="navbar-cart-count"></span>
+            <span class="navbar-cart-count"
+                  v-if="cartCount>0">{{cartCount}}</span>
             <a class="navbar-link navbar-cart-link"
                href="/#/cart">
               <svg class="navbar-cart-logo">
@@ -118,6 +119,7 @@
   </header>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'NavHeader',
   data () {
@@ -126,17 +128,25 @@ export default {
       errorTip: false,
       userName: 'admin',
       userPwd: '123456',
-      nickName: ''
     }
+  },
+  computed: {
+    ...mapState(['nickName', 'cartCount'])
   },
   mounted () {
     this.checkLogin()
   },
   methods: {
+    ...mapMutations(['updateNickName', 'initCartCount']),
     async checkLogin () {
       let res = await this.axios.get('/users/checkLogin')
       if (res.data.status === 0) {
-        this.nickName = res.data.result
+        this.updateNickName(res.data.result)
+        this.getCartCount();
+      } else {
+        if (this.$route.path != "/goods") {
+          this.$router.push("/goods");
+        }
       }
     },
     async login () {
@@ -149,7 +159,8 @@ export default {
         userPwd: this.userPwd
       })
       if (status === 0) {
-        this.nickName = result.userName
+        this.updateNickName(result.userName)
+        this.getCartCount()
         this.errorTip = false
         this.loginModalFlag = false;
       } else {
@@ -159,7 +170,16 @@ export default {
     async Logout () {
       let { data: { status } } = await this.axios.post('/users/logout');
       if (status == 0) {
-        this.nickName = ''
+        this.updateNickName('')
+        this.initCartCount(0)
+
+      }
+    },
+    // 获取购物车数量
+    async getCartCount () {
+      let { data: { status, result } } = await this.axios.get('users/getCartCount')
+      if (status === 0) {
+        this.initCartCount(result)
       }
     }
   }

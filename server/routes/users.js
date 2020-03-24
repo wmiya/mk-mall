@@ -359,4 +359,30 @@ router.get('/orderDetail', async (req, res, next) => {
   }
 })
 
+router.get('/getCartCount', async (req, res, next) => {
+  let userId = req.cookies.userId
+  if (userId) {
+    let doc = await user.findOne({
+      userId: userId
+    })
+    if (doc) {
+      let cartList = doc.cartList;
+      let cartCount = 0;
+      cartList.map(item => {
+        cartCount += parseInt(item.productNum)
+      })
+      res.json({
+        status: 0,
+        msg: '',
+        result: cartCount
+      })
+    } else {
+      req.json({
+        status: 1,
+        msg: '当前用户不存在',
+        result: ''
+      })
+    }
+  }
+})
 module.exports = router;

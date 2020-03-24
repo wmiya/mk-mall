@@ -111,7 +111,7 @@
                   <div class="cart-item-opration">
                     <a href="javascript:;"
                        class="item-edit-btn"
-                       @click="delCartConfirm(item.productId)">
+                       @click="delCartConfirm(item)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -173,7 +173,7 @@
 </template>
 <script>
 import NavBread from '@/components/NavBread'
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'Cart',
   components: {
@@ -182,7 +182,7 @@ export default {
   data () {
     return {
       cartList: [],
-      productId: '',
+      delItem: '',
       modalConfirm: false
     }
   },
@@ -213,14 +213,15 @@ export default {
     this.init()
   },
   methods: {
+    ...mapMutations(['updateCartCount']),
     async  init () {
       let { data: { status, result } } = await this.axios.get('/users/cartList')
       if (status === 0) {
         this.cartList = result
       }
     },
-    delCartConfirm (productId) {
-      this.productId = productId
+    delCartConfirm (item) {
+      this.delItem = item
       this.modalConfirm = true
     },
     closeModal () {
@@ -228,10 +229,11 @@ export default {
     },
     async delCart () {
       let { data: { status } } = await this.axios.post('/users/cartDel', {
-        productId: this.productId
+        productId: this.delItem.productId
       })
       if (status === 0) {
         this.modalConfirm = false
+        this.updateCartCount(-this.delItem.productNum)
         this.init()
       }
     },
@@ -252,8 +254,16 @@ export default {
         productNum: item.productNum
       })
       if (status === 0) {
+        let num = 0;
+        if (type == 'add') {
+          num = 1
+        } else if (type == 'minu') {
+          num = -1
+        }
+        this.updateCartCount(num)
         console.log(result)
         this.init()
+
       }
     },
     async  toggleCheckAll () {

@@ -96,6 +96,7 @@
 import NavBread from '@/components/NavBread'
 import NavFilter from '@/components/GoodsList/NavFilter'
 import FilterPrice from '@/components/GoodsList/FilterPrice'
+import { mapMutations } from 'vuex'
 export default {
   name: 'GoodsList',
   components: {
@@ -122,6 +123,7 @@ export default {
     this.getGoodsList()
   },
   methods: {
+    ...mapMutations(['updateCartCount']),
     async getGoodsList (flag) {
       this.loading = true
       let params = {
@@ -178,6 +180,7 @@ export default {
         productId: productId
       })
       if (status === 0) {
+        this.updateCartCount(1)
         this.mdShowCart = true
       } else {
         this.mdShow = true
