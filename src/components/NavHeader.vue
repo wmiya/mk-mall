@@ -35,9 +35,11 @@
     </svg>
     <div class="navbar">
       <div class="navbar-left-container">
-        <a href="/">
+        <router-link to="/goods">
           <img class="navbar-brand-logo"
-               src="/static/logo.png"></a>
+               src="/static/logo.png">
+
+        </router-link>
       </div>
       <div class="navbar-right-container"
            style="display: flex;">

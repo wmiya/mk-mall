@@ -48,14 +48,23 @@ router.get('/list', async (req, res, next) => {
         'salePrice': sort
     })
     let doc = await goodsModel.exec()
-    res.json({
-        status: 0,
-        msg: '',
-        result: {
-            count: doc.length,
-            list: doc
-        }
-    })
+    if (doc) {
+        res.json({
+            status: 0,
+            msg: '',
+            result: {
+                count: doc.length,
+                list: doc
+            }
+        })
+    } else {
+        res.json({
+            status: 1,
+            msg: '失败了',
+            result: ''
+        })
+    }
+
 
 })
 router.post('/addCart', async (req, res, next) => {
